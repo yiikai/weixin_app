@@ -70,21 +70,29 @@ def weixin_verify():
 		for content in root.iter('Content'):
 			inputText = content.text
 			dbhandler = mysqlhandler("Menu","127.0.0.1","root")
-			data = dbhandler.execute("select title,title_img,ingredient,steps from Shipu where title like '%%%s%%'" % (inputText)).first()
-			if data is None:
+			#data = dbhandler.execute("select title,title_img,ingredient,steps from Shipu where title like '%%%s%%'" % (inputText)).first()
+			data = dbhandler.execute("select title,title_img,ingredient,steps from Shipu where title like '%%%s%%' limit 0,4" % (inputText)).fetchall()
+			if len(data) == 0:
+				print "XXXXXXXXXXXXXXXXXXXXXXXX",len(data)
+				dbhandler.disconnect()
 				return weixinObj.wx_text_response(root,"没有想要的菜谱哟！！！！")
 			#获取成分信息和标题组织成文字信息
-			#caipu_detail = ''
-			#caipu_detail = caipu_detail + data[0] + "\n" + ("原材料:\n").decode('utf-8')
-			#ingredient = json.loads(data[1])
-			#for i in ingredient:
-			#	caipu_detail = caipu_detail + i['name'] + ' ' + i['count'] + '\n'
-			titlepicurl = "http://106.14.199.53/resource/" + data[1]
-			titlename = data[0]
-			ingrd = data[2]
-			dataurl = "http://106.14.199.53"+ url_for('caipu',titlename=titlename)#titlename=titlename,picurl=titlepicurl,ingredient="dji")
+			#titlepicurl = "http://106.14.199.53/resource/" + data[1]
+			#titlename = data[0]
+			#ingrd = data[2]
+			#dataurl = "http://106.14.199.53"+ url_for('caipu',titlename=titlename)#titlename=titlename,picurl=titlepicurl,ingredient="dji")
+			#dbhandler.disconnect()
+			#return weixinObj.wx_pictext_response(root,titlename,titlepicurl,dataurl)
+			datainfo = []
+			for i in data:
+				titlepicurl = "http://106.14.199.53/resource/" + i[1]
+				titlename = i[0]
+				ingrd = i[2]
+				dataurl = "http://106.14.199.53"+ url_for('caipu',titlename=titlename)
+				d = {"titlename":titlename,"titlepicurl":titlepicurl,"dataurl":dataurl}
+				datainfo.append(d)
 			dbhandler.disconnect()
-			return weixinObj.wx_pictext_response(root,titlename,titlepicurl,dataurl)
+			return weixinObj.wx_pictext_nums_response(root,datainfo)
 
 									
 				

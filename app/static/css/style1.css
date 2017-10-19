@@ -1,0 +1,47 @@
+body {
+    background-color: #fff;
+    /*font-family: "Microsoft YaHei", Arial, Helvetica, sans-serif;*/
+    font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale
+}
+
+ul li {
+    list-style: none;
+}
+
+ul {
+    padding: 0 1px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+li {
+    line-height: 50px;
+    position: relative;
+    border-bottom: 1px solid #e5e3df;
+}
+
+span {
+    color: #999;
+    float: right;
+    margin-right: 50px;
+}
+
+p {
+    font-size: 15px;
+    color: #999;
+}
+
+img {
+    max-width: 100%;
+    border-radius: 20px;
+}
+
+.wrapper {
+    padding: 15px;
+}
+

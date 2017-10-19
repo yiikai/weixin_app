@@ -4,8 +4,7 @@ import time
 
 guideline = "欢迎关注健康出味 \n\
 	     输入关键字: \n\
-	     1.历史：查看过往文章 \n\
-	     2.输入任意关键字查看相关菜谱(功能建设中)"
+	     1.输入任意关键字查看相关菜谱"
 
 
 class wxIF(object):
@@ -36,6 +35,39 @@ class wxIF(object):
 			self._serverid = server.text
  		rsp = self.__make_pictext_response(titletext,titlepicurl,dataurl)
 		return rsp
+
+	#可以返回多条图文信息接口
+	#datainfo数组成员:{titlename:,titlepicurl:,dataurl:}
+	def wx_pictext_nums_response(self,xmlroot,datainfo):
+		for username in xmlroot.iter('FromUserName'):
+			self._userid = username.text
+		for server in xmlroot.iter("ToUserName"):
+			self._serverid = server.text
+		rsp = self.__make_pictext_nums_response(datainfo)
+		return rsp			
+
+	def __make_pictext_nums_response(self,datainfo):
+		count = len(datainfo)
+		pictextdata = '<xml>\
+                                <ToUserName><![CDATA[%s]]></ToUserName>\
+                                <FromUserName><![CDATA[%s]]></FromUserName>\
+                                <CreateTime>%d</CreateTime>\
+                                <MsgType><![CDATA[news]]></MsgType>\
+                                <ArticleCount>%d</ArticleCount>\
+				<Articles>'%(self._userid,self._serverid,int(time.time()),count)
+		for i in datainfo:
+			article = '<item>\
+                                <Title><![CDATA[%s]]></Title>\
+                                <Description><![CDATA[%s]]></Description>\
+                                <PicUrl><![CDATA[%s]]></PicUrl>\
+                                <Url><![CDATA[%s]]></Url>\
+                                </item>'%(i['titlename'],"推荐菜".decode('utf-8'),i['titlepicurl'],i['dataurl'])
+			pictextdata = pictextdata + article
+		pictextdata = pictextdata + '</xml>'
+		print "--------------------------------------"
+		print pictextdata.encode('utf-8')
+		print "======================================"
+		return pictextdata
 	
 	def __make_pictext_response(self,titletext,titlepicurl,dataurl):
 		pictextdata = '<xml>\

@@ -11,9 +11,9 @@
     <link rel="apple-touch-icon" href="icon.png">
     <!-- Place favicon.ico in the root directory -->
 
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <link rel="stylesheet" href="static/css/normalize.css">
+    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" type="text/css" href="static/css/style1.css"/>
 </head>
 <body>
 <!--[if lte IE 9]>
@@ -21,21 +21,24 @@
     your browser</a> to improve your experience and security.</p>
 <![endif]-->
 <div class="wrapper">
-    <h3 class="title">{{title}}</h3>
+    <h2 class="title">{{title}}</h2>
     <div>
         <img src="{{pic}}">
-	<p>原料：</p>
-	{% for i in ingred %}
-    	<p>{{i.name}}  {{i.count}}</p>
+    </div>
+    <h4 class="material">原料:</h4>
+    <ul class="mdetial">		
+    	{% for i in ingred %}
+    	<li>{{i.name}} <span>{{i.count}}</span></li>
 	{% endfor %}
-	<br>
+    </ul>
+
 	<p>制作步骤：</p>
 	{% for i in step %}
 	<p>{{i.step}}</p>
+	<div>
 	<img src="{{i.imgpath}}">
+	</div>
 	{% endfor %}
-    </div>
 </div>
-
 </body>
 </html>
